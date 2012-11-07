@@ -38,18 +38,26 @@ application.js) to include Cartilage:
 
     //= require cartilage
 
+After Cartilage loads, it automatically calls your launch.js file. This file is required.
+Your application should be initialized in this file:
+
+    //= require app
+    //= require_tree ./models
+    //= require_tree ./collections
+    //= require_tree ./views
+    //= require_tree ../templates
 
 ### Working With Windows
 
 If you need to work with IE on Windows it is recommend that you continue development
 on Mac or *nix environment.  If you're using Pow, run "rake pow:prepare" which will
-create a "public" symlink to the test directory.  Once the cartilage repo is linked 
+create a "public" symlink to the test directory.  Once the cartilage repo is linked
 it'll automatically pick up the public folder and start serving the static files there.
 With Pow, you'll be able to use xip.io to access the tests from browsers through a VM
 or beyond your own computer.
 
-Alternatively, if you're not using Pow you can also simply call 'rackup' from the repo 
-root which will start the default server and point directly to the test directory.  
+Alternatively, if you're not using Pow you can also simply call 'rackup' from the repo
+root which will start the default server and point directly to the test directory.
 
 ## License
 
