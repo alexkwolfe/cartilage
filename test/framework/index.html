@@ -18,7 +18,7 @@
     <script src="cartilage.js"></script>
 
     <!-- Cartilage references JST from sprockets but that's not available
-         in this particular context. For now, we'll just copy it over 
+         in this particular context. For now, we'll just copy it over
          manually in order to ensure no errors are thrown. -->
 
     <script>
@@ -29,7 +29,7 @@
 
     <!-- Tests -->
     <script type="text/coffeescript">
-  
+
       QUnit.config.testTimeout = 5000
       QUnit.config.autostart = false
 
@@ -39,6 +39,8 @@
 
       # Application
       # CoffeeScript.load "cartilage/application_test.js.coffee"
+      CoffeeScript.load "cartilage/application_test.js.coffee"
+      CoffeeScript.load "cartilage/namespaces_test.js.coffee"
 
       # Views
       # CoffeeScript.load "cartilage/views/view_test.js.coffee"

@@ -1,0 +1,3 @@
+<% Cartilage.views.each do |view| %>
+Cartilage.Application.Views.<%=view[:namespace]%>.<%= view[:class]%>.namespace = Cartilage.Application.Views.<%=view[:namespace]%>;
+<% end %>
