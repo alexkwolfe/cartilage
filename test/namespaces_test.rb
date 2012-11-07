@@ -18,11 +18,11 @@ class NamespacesTest < ActiveSupport::TestCase
 
       expected = {
         'Bip' => {
-          'Bap' => { 'Zip' => { } },
-          'Zap' => { }
+          'Bap' => { 'Zip' => {} },
+          'Zap' => {}
         },
         'Foo' => {
-          'Bar' => { }
+          'Bar' => {}
         }
       }
 

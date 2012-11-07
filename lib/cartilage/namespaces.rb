@@ -9,29 +9,41 @@ module Cartilage
       # in Cartilage.Application.Views.
       #
       def namespaces
-        @namespaces ||= begin
-          { 'Views' => namespace_from_dir(File.join(javascripts_path, 'views')) }
-        end
+        @namespaces ||= {
+          'Views' => namespace_from_dir(File.join(javascripts_path, 'views'))
+        }
       end
 
+      #
+      # List the view classes and their namespaces, for the purpose of handing references of each
+      # namespace to its respective views.
+      #
       def views
-        views_dir = Pathname.new(File.join(javascripts_path, 'views'))
-        views = Dir[File.join(views_dir, '**', '*.js.*')]
-        views.collect do |file|
-          path = Pathname.new(file).relative_path_from(views_dir).to_s
-          {
-            namespace: File.dirname(path).split(File::SEPARATOR).collect(&:capitalize).join('.'),
-            class: File.basename(path).split('.').first.camelize
-          }
+        @views ||= begin
+          views_dir = Pathname.new(File.join(javascripts_path, 'views'))
+          views     = Dir[File.join(views_dir, '**', '*.js.*')]
+          views.collect do |file|
+            path = Pathname.new(file).relative_path_from(views_dir).to_s
+            {
+              namespace: File.dirname(path).split(File::SEPARATOR).collect(&:capitalize).join('.'),
+              class:     File.basename(path).split('.').first.camelize
+            }
+          end
         end
       end
 
       private
 
+      #
+      # Get the path to the Rails app's javascripts directory.
+      #
       def javascripts_path
         @javascripts_path ||= File.join(Rails.root, 'app', 'assets', 'javascripts')
       end
 
+      #
+      # Get the nested Hash representing the directories under the specified path.
+      #
       def namespace_from_dir(path)
         children = { }
         if Dir.exists?(path)
