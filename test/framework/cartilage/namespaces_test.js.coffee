@@ -2,13 +2,12 @@ module "Cartilage.Namespaces"
 
 test "should have view namespaces", ->
   views = {
-    Foo:
-      { Bar:
-        { ShowView: Cartilage.Application.Views.Foo.Bar.ShowView } }
+    Foo: {
+      fqn: 'Foo',
+      Bar: {
+        fqn: 'Foo.Bar',
+        ShowView: Cartilage.Application.Views.Foo.Bar.ShowView
+      }
+    }
   }
-  deepEqual( Cartilage.Application.Views, views)
-
-test "view should have reference to namespace", ->
-  namespace = Cartilage.Application.Views.Foo.Bar
-  view = Cartilage.Application.Views.Foo.Bar.ShowView
-  deepEqual(view.namespace, namespace)
+  deepEqual(Cartilage.Application.Views, views)

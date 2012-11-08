@@ -58,7 +58,10 @@ _.underscore = (string) ->
   string = string.replace /-/g, "_"
 
   # Remove Leading Underscore
-  string.replace /^_/, ""
+  string = string.replace /^_/, ""
+
+  # Remove underscores before folder separators
+  string.replace /\/_/, "/"
 
 #
 # Removes the specified value from the given array by altering the array

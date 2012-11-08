@@ -25,7 +25,7 @@ module Cartilage
           views.collect do |file|
             path = Pathname.new(file).relative_path_from(views_dir).to_s
             {
-              namespace: File.dirname(path).split(File::SEPARATOR).collect(&:capitalize).join('.'),
+              namespace: path_to_namespace(File.dirname(path)),
               class:     File.basename(path).split('.').first.camelize
             }
           end
@@ -44,18 +44,25 @@ module Cartilage
       #
       # Get the nested Hash representing the directories under the specified path.
       #
-      def namespace_from_dir(path)
-        children = { }
+      def namespace_from_dir(path, root=nil)
+        relative_path = root && Pathname.new(path).relative_path_from(Pathname.new(root)).to_s
+        children = {}
+        children['fqn'] = path_to_namespace(relative_path) if relative_path
         if Dir.exists?(path)
+          root ||= path
           Dir.foreach(path) do |entry|
             next if (entry == '..' || entry == '.')
             full_path = File.join(path, entry)
             if File.directory?(full_path)
-              children[entry.capitalize] = namespace_from_dir(full_path)
+              children[entry.capitalize] = namespace_from_dir(full_path, root)
             end
           end
         end
         children
+      end
+
+      def path_to_namespace(path)
+        path.split(File::SEPARATOR).collect(&:capitalize).join('.')
       end
     end
 

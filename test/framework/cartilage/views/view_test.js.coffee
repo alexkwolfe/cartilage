@@ -69,6 +69,11 @@ test "should determine template name automatically", ->
   testView = new TestView
   equal testView.template(), "TestView Template", "template() should return 'TestView Template'"
 
+test "should determine template folder name automatically", ->
+  window.JST = { "foo/bar/show_view": => "Foo Bar ShowView Template"}
+  view = new Cartilage.Application.Views.Foo.Bar.ShowView
+  equal view.template(), "Foo Bar ShowView Template", "template() should return 'Foo Bar ShowView Template'"
+
 test "should determine CSS class names from the inheritance chain", ->
   class TestViewOne extends Cartilage.View
   class TestViewTwo extends TestViewOne
@@ -83,3 +88,13 @@ test "should append custom CSS class names to the view's class names", ->
   testView = new TestView
   className = testView.determineClassName()
   equal className, "view test-view extra-class-one extra-class-two", "Class names should include both automatically determined names and custom names"
+
+test "should have namespace", ->
+  view = new Cartilage.Application.Views.Foo.Bar.ShowView
+  equal Cartilage.Application.Views.Foo.Bar, view.namespace
+  equal "Foo.Bar", view.namespace.fqn
+
+test "should have fqn", ->
+  view = new Cartilage.Application.Views.Foo.Bar.ShowView
+  equal "Foo.Bar.ShowView", view.fqn
+

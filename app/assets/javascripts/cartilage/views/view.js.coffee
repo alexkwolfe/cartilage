@@ -24,6 +24,16 @@ class window.Cartilage.View extends Backbone.View
   #
   @property "observers", access: READONLY, default: []
 
+  #
+  # The namespace containing this view.
+  #
+  @property "namespace", access: READONLY, get: -> @.__proto__.constructor.namespace
+
+  #
+  # The fully qualified name of this view (<namespace fqn>.<view name>)
+  #
+  @property "fqn", access: READONLY, get: -> _.compact([@namespace?.fqn, @constructor.name]).join('.')
+
   # --------------------------------------------------------------------------
 
   #
@@ -33,15 +43,17 @@ class window.Cartilage.View extends Backbone.View
   # templates).
   #
   template: (options) ->
+    template_name_parts = @fqn.split(/\./).map (n) -> _.underscore(n)
+    template_name = template_name_parts.join('/')
     try
-      if JST[_.underscore(@constructor.name)]
-        JST[_.underscore(@constructor.name)](options)
+      if JST[template_name]
+        JST[template_name](options)
       else
         if console
-          console.info "Missing template #{_.underscore(@constructor.name)}.jst.ejs for #{@constructor.name}"
+          console.info "Missing template #{template_name}.jst.ejs for #{@constructor.name}"
     catch error
       if console
-        console.error "Template error in #{_.underscore(@constructor.name)}.jst.ejs: \"#{error.message}\"", error
+        console.error "Template error in #{template_name}.jst.ejs: \"#{error.message}\"", error
 
   #
   # Override the standard constructor so that we can extend each view with any
@@ -230,3 +242,5 @@ class window.Cartilage.View extends Backbone.View
     while superklass = superklass.constructor.__super__
       classes.push superklass
     classes.reverse()
+
+
